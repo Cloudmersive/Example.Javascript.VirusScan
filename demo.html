@@ -2,8 +2,37 @@
 <html>
 <body>
 
-<h1>Cloudmersive demo</h1>
+<h1>Cloudmersive Virus Scan JavaScript demo</h1>
 <p>Virus scan a file.</p>
+<input type="file" id="myFile" name="filename">
+<button type="button" onclick="scan()" >Scan</button>
+<script>
+function scan() {
+    var data = new FormData();
+    data.append("inputFile", myFile.files[0], "file");
+    
+    var xhr = new XMLHttpRequest();
+    //xhr.withCredentials = true;
 
+    xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+            console.log(this.responseText);
+        }
+    });
+
+    xhr.open("POST", "https://api.cloudmersive.com/virus/scan/file/advanced");
+    xhr.setRequestHeader("allowExecutables", "false");
+    xhr.setRequestHeader("allowInvalidFiles", "false");
+    xhr.setRequestHeader("allowScripts", "false");
+    xhr.setRequestHeader("allowPasswordProtectedFiles", "false");
+    xhr.setRequestHeader("allowMacros", "false");
+    xhr.setRequestHeader("allowXmlExternalEntities", "false");
+    xhr.setRequestHeader("restrictFileTypes", "");
+    //xhr.setRequestHeader("Content-Type", "multipart/form-data");
+    xhr.setRequestHeader("Apikey", "YOUR-API-KEY-HERE");
+
+    xhr.send(data);
+}
+</script>
 </body>
 </html>
